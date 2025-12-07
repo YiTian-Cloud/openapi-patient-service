@@ -1,58 +1,5 @@
 # OpenAPI Patient Service (API-First Demo)
 
-![Build Status](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci.yml/badge.svg)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YiTian-Cloud/openapi-patient-service)
-
-**Live Demo:** https://openapi-patient-service.vercel.app  <!-- replace with your actual Vercel URL once deployed -->
-
-OpenAPI Patient Service (API-First Demo)
-
-A lightweight demo service that shows how to build an API-First application using:
-
-OpenAPI 3.0 YAML spec
-
-Express.js
-
-JWT-based authentication
-
-Versioned APIs (v1 public, v2 secured)
-
-Auto-generated API Docs (Swagger UI)
-
-This project demonstrates how writing the OpenAPI contract first drives consistent API design, documentation, and implementation.
-
-🚀 Features
-API-First OpenAPI 3.0 Design
-
-Complete OpenAPI spec (openapi.yaml)
-
-Auto-documented with Swagger UI at /docs
-
-Schemas, request/response bodies, versioning
-
-Versioned Endpoints
-Version	Path	Security	Notes
-v1	/v1/patients	❌ Public	For simple unauthenticated demo use
-v2	/v2/patients	✅ JWT Required	Shows API hardening & auth patterns
-Authentication
-
-/auth/login issues a real JWT token
-
-All v2 endpoints require Authorization: Bearer <token>
-
-Secret stored in .env
-
-Landing Page
-
-Simple landing page with:
-
-Link to /docs
-
-Button to view raw openapi.yaml
-
-# OpenAPI Patient Service (API-First Demo)
-
 [![Build Status](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci.yml/badge.svg)](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci.yml)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YiTian-Cloud/openapi-patient-service)
