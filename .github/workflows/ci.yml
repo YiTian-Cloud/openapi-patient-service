@@ -7,21 +7,24 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build-and-test:
+  build-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
 
-      # If you don’t have tests yet, this will still pass.
-      - name: Run tests (if any)
-        run: npm test || echo "No tests configured"
+      - name: Lint (if configured)
+        run: npm run lint || echo "No linter configured"
+
+      - name: Run tests
+        run: npm test

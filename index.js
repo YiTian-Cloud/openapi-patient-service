@@ -319,12 +319,12 @@ app.use('/v2', v2Router);
 
 // ----- Start server -----
 
-const PORT = process.env.PORT || 3000;
-if (require.main === module) {
-    app.listen(PORT, () => {
-        console.log(`Patient Service API running on http://localhost:${PORT}`);
-        console.log(`Swagger docs at http://localhost:${PORT}/docs`);
-    }
-});
-
+// Export the app for testing
 module.exports = app;
+
+// Start server only if NOT in test mode
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
