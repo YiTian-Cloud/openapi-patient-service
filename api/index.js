@@ -1,7 +1,6 @@
-// api/index.js - Vercel serverless entry
-const app = require('../index');
+// api/index.js
+const app = require('../src/app');
 
 module.exports = (req, res) => {
-    // Delegate all requests to the express app
-    return app(rq, res);
+  return app(req, res);
 };
