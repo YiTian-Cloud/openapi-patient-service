@@ -1,0 +1,245 @@
+openapi: 3.0.3
+info:
+  title: Patient Service API
+  version: 1.0.0
+  description: Simple API for managing patients (API-first Demo)
+
+servers:
+  - url: http://localhost:3000
+    description: Local dev
+
+
+paths:
+  /v1/patients:
+    get:
+      summary: List all patients (v1)
+      operationId: listPatientsV1
+      responses:
+        '200':
+          description: List of patients (v1)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PatientV1'
+    post:
+      summary: Create a new patient (v1)
+      operationId: createPatientV1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPatientV1'
+      responses:
+        '201':
+          description: Patient created (v1)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+
+  /v1/patients/{id}:
+    get:
+      summary: Get a patient by ID (v1)
+      operationId: getPatientByIdV1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Patient found (v1)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientV1'
+        '404':
+          description: Patient not found (v1)
+  /v2/patients:
+    get:
+      summary: List all patients (v2)
+      operationId: listPatientsV2
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of patients (v2)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PatientV2'
+    post:
+      summary: Create a new patient (v2)
+      operationId: createPatientV2
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPatientV2'
+      responses:
+        '201':
+          description: Patient created (v2)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientV2'
+  /v2/patients/{id}:
+    get:
+      summary: Get a patient by ID (v2)
+      operationId: getPatientByIdV2
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Patient found (v2)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientV2'
+        '404':
+          description: Patient not found (v2)
+
+  /auth/login:
+    post:
+      summary: User login (public)
+      description: |
+        Authenticates a user using username and password.
+        Returns a JWT token that can be used to access secured v2 APIs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: admin
+                password:
+                  type: string
+                  example: password123
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  token:
+                    type: string
+                    description: JWT token for authenticated requests
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          description: Missing username or password
+        '401':
+          description: Invalid credentials
+
+
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    PatientV1:
+      type: object
+      required:
+        - id
+        - name
+        - birthDate
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        condition:
+          type: string
+          description: Primary condition (optional)
+    NewPatientV1:
+      type: object
+      required:
+        - name
+        - birthDate
+      properties:
+        name:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        condition:
+          type: string
+
+    PatientV2:
+      type: object
+      required:
+        - id
+        - name
+        - birthDate
+        - phoneNumber
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        phoneNumber:
+          type: string
+          description: Primary contact number (E.1t4 recommended)
+        condition:
+          type: string
+          description: Primary condtion (optional)
+
+    NewPatientV2:
+      type: object
+      required:
+        - name
+        - birthDate
+        - phoneNumber
+      properties:
+        name:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        phoneNumber:
+          type: string
+        condition:
+          type: string
+
+
+
+
+
+
+
+
