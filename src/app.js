@@ -3,8 +3,8 @@ require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
-const YAML = require('yamljs');
-const swaggerUi = require('swagger-ui-express');
+//const YAML = require('yamljs');
+//const swaggerUi = require('swagger-ui-express');
 
 const v1Router = require('./routes/v1');
 const v2Router = require('./routes/v2');
@@ -17,7 +17,7 @@ app.use(express.json());
 
 // ----- Load OpenAPI spec -----
 const openapiPath = path.join(__dirname, '..', 'openapi.yaml');
-const openapiDocument = YAML.load(openapiPath);
+//const openapiDocument = YAML.load(openapiPath);
 
 // ----- Landing page -----
 app.get('/', (req, res) => {
@@ -158,8 +158,52 @@ app.get('/openapi.yaml', (req, res) => {
 });
 
 // ----- Swagger docs -----
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDocument));
+//app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDocument));
+// ----- Swagger docs via CDN-based Swagger UI -----
+app.get('/docs', (req, res) => {
+    const specUrl = '/openapi.yaml'; // same origin, served by our app
+  
+    res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Patient Service API Docs</title>
+        <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          #swagger-ui {
+            box-sizing: border-box;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="swagger-ui"></div>
+  
+        <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+        <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js"></script>
+        <script>
+          window.onload = function() {
+            SwaggerUIBundle({
+              url: '${specUrl}',
+              dom_id: '#swagger-ui',
+              presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+              ],
+              layout: "StandaloneLayout"
+            });
+          };
+        </script>
+      </body>
+    </html>
+    `);
+  });
 
+  
 // ----- Auth + API routes -----
 app.use('/auth', authRouter);  // POST /auth/login
 app.use('/v1', v1Router);      // public v1
