@@ -51,21 +51,55 @@ Link to /docs
 
 Button to view raw openapi.yaml
 
-📁 Project Structure
+# OpenAPI Patient Service (API-First Demo)
+
+[![Build Status](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci.yml/badge.svg)](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci.yml)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YiTian-Cloud/openapi-patient-service)
+
+**Live Demo:** https://openapi-patient-service.vercel.app <!-- replace with your actual Vercel URL -->
+
+A small but realistic backend demo that shows how to build an **API-first** service using:
+
+- **OpenAPI 3.0** (`openapi.yaml`) as the contract  
+- **Express.js** with a clean modular structure (`src/…`)  
+- **JWT-secured v2 API** with `/auth/login`  
+- **Versioned APIs**: `v1` (public) and `v2` (secured)  
+- **Auto-generated docs** with Swagger UI  
+
+Perfect as a portfolio piece for platform / API / healthcare-adjacent roles.
+
+---
+
+## 📁 Project Structure
+
+```text
 openapi-patient-service/
 │
-├── openapi.yaml          # API contract (source of truth)
-├── server.js             # Express app
-├── auth/
-│   └── login.js          # Login handler + JWT generation
-├── routes/
-│   ├── v1.js             # Public endpoints
-│   └── v2.js             # Secured endpoints
-├── middleware/
-│   └── auth.js           # JWT verification
-├── public/
-│   └── index.html        # Simple landing page
-└── package.json
+├── src/
+│   ├── app.js              # Builds the Express app: routes, Swagger, landing page
+│   ├── routes/
+│   │   ├── v1.js           # Public v1 endpoints
+│   │   └── v2.js           # JWT-protected v2 endpoints
+│   ├── auth/
+│   │   └── login.js        # POST /auth/login -> issues JWT
+│   ├── middleware/
+│   │   └── auth.js         # JWT auth middleware for v2
+│   └── data/
+│       └── patients.js     # In-memory patient store utilities
+│
+├── tests/
+│   └── patients.test.js    # Jest + supertest API tests for v1 & v2
+│
+├── api/
+│   └── index.js            # Vercel serverless entry (wraps Express app)
+│
+├── index.js                # Local dev entrypoint (node index.js)
+├── openapi.yaml            # OpenAPI 3.0 contract (used by Swagger UI)
+├── vercel.json             # Routes all traffic to /api/index on Vercel
+├── package.json
+└── README.md
+
 
 🧪 Running Locally
 1. Install dependencies
