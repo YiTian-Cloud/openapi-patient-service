@@ -6,7 +6,7 @@ const client = require('prom-client');
 const express = require('express');
 
 const morgan = require('morgan');
-const { v4: uuidv4 } = require('uuid');
+//const { v4: uuidv4 } = require('uuid');
 
 const path = require('path');
 
@@ -22,11 +22,20 @@ const app = express();
 // Parse JSON bodies
 app.use(express.json());
 
+// Simple request ID generator (demo-friendly, not cryptographic)
+function generateRequestId() {
+    return (
+      Math.random().toString(36).substring(2, 10) +
+      Date.now().toString(36)
+    );
+  }
 
+  
 
 // Attach a correlation ID to every request for tracing across logs
 app.use((req, res, next) => {
-    const requestId = req.headers['x-request-id'] || uuidv4();
+    ///const requestId = req.headers['x-request-id'] || uuidv4();
+    const requestId = req.headers['x-request-id'] || generateRequestId();
     req.id = requestId;
     res.setHeader('x-request-id', requestId);
     next();
