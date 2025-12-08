@@ -1,3 +1,7 @@
+// Ensure JWT secret exists for tests (CI + local)
+process.env.API_JWT_SECRET = process.env.API_JWT_SECRET || 'supersecretdevkey2';
+
+
 const request = require("supertest");
 const app = require("../src/app");
 
@@ -5,7 +9,7 @@ const app = require("../src/app");
 const jwt = require("jsonwebtoken");
 const TOKEN = jwt.sign(
   { sub: "u1", username: "admin", role: "admin" },
-  process.env.API_JWT_SECRET || "testsecret",
+  process.env.API_JWT_SECRET || "supersecretdevkey2",
   { expiresIn: "1h" }
 );
 
