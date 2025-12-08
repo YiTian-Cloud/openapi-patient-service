@@ -10,6 +10,47 @@ servers:
 
 
 paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns basic uptime information to confirm the service is running.
+      tags:
+        - System
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ok"
+                  uptime:
+                    type: number
+                    example: 123.45
+
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      description: |
+        INTERNAL ONLY — Exposes service-level Prometheus metrics for scraping. 
+        Not intended for external client use.
+      tags:
+        - Internal
+      responses:
+        '200':
+          description: Prometheus metrics text output
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: |
+                  # HELP http_request_duration_ms Duration of HTTP requests in ms
+                  # TYPE http_request_duration_ms histogram
+
+
   /v1/patients:
     get:
       summary: List all patients (v1)
@@ -38,7 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Patient'
+                $ref: '#/components/schemas/PatientV1'
 
   /v1/patients/{id}:
     get:
@@ -214,10 +255,11 @@ components:
           format: date
         phoneNumber:
           type: string
-          description: Primary contact number (E.1t4 recommended)
+          description: Primary contact number (E.164 recommended)
         condition:
           type: string
-          description: Primary condtion (optional)
+          description: Primary condition (optional)
+          example: "+16506336721"
 
     NewPatientV2:
       type: object
