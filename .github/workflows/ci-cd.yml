@@ -11,25 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Setup Node
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Run tests (fail if tests fail)
       - name: Run tests
         run: npm test
 
-      # 5. Quick syntax sanity check (optional)
       - name: Lint OpenAPI and run syntax check
         run: |
           echo "Verifying OpenAPI and Node.js start script..."
@@ -37,7 +32,6 @@ jobs:
 
   deploy-vercel:
     needs: build-test
-    # only deploy on *push* to main, not on pull requests
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
 
@@ -46,7 +40,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Node.js
-      uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
 
