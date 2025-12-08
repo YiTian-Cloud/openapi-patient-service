@@ -1,6 +1,6 @@
 # OpenAPI Patient Service (API-First Demo)
 
-[![Build Status](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci.yml/badge.svg)](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci.yml)
+[![Build Status](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/YiTian-Cloud/openapi-patient-service/actions/workflows/ci-cd.yml)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YiTian-Cloud/openapi-patient-service)
 
